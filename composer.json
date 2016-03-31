@@ -1,6 +1,7 @@
 {
     "name": "hardywen/youzan",
-    "description": "",
+    "description": "私用有赞sdk",
+    "keywords":["私用有赞sdk"],
     "license": "MIT",
     "authors": [
         {
