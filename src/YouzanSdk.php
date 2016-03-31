@@ -32,29 +32,24 @@ class YouzanSdk
     public function authorize()
     {
         if (!request('code')) {
-            $accessToken = Session::get('youzan.access_token');
-            if (!$accessToken || (isset($accessToken->expires_at) && $accessToken->expires_at < Carbon::now())) {
-                return $this->oauth->authorize();
-            }
+            return $this->oauth->authorize();
         } else {
-            $accessToken = $this->getAccessToken() ? $this->getAccessToken() : $this->oauth->token();
+            $accessToken = $this->oauth->token();
         }
 
         if (isset($accessToken->error)) {
             throw new Exception($accessToken->error_description);
         }
 
-        $accessToken->expires_at = Carbon::now()->addSeconds($accessToken->expires_in);
-
-        Session::put('youzan.access_token', $accessToken);
-
         return true;
     }
 
-    public function getAccessToken()
+
+    public function setToken($token)
     {
-        $accessToken = Session::get('youzan.access_token');
-        return $accessToken;
+        $this->access_token = $token;
+
+        return $this;
     }
 
 
@@ -71,9 +66,7 @@ class YouzanSdk
 
     protected function api($requestMethod, $method, $params)
     {
-        $accessToken = Session::get('youzan.access_token');
-
-        $params = array_merge($params, ['method' => $method, 'access_token' => $accessToken->access_token]);
+        $params = array_merge($params, ['method' => $method, 'access_token' => $this->access_token]);
 
         $result = $this->api->$requestMethod($params);
 
@@ -87,7 +80,6 @@ class YouzanSdk
     public function sessionClear()
     {
         Session::forget('youzan.access_token');
-        Session::forget('youzan.state');
     }
 
 }
