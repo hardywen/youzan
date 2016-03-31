@@ -24,23 +24,19 @@ class Oauth
     public function authorize()
     {
 
-        $state = Session::get('youzan.state', function () {
-            $state = str_random(32);
-            Session::put('youzan.state', $state);
-            return $state;
-        });
+        $state = str_random(32);
+        Session::put('youzan.state', $state);
 
         $params = [
             'client_id'     => $this->config['client_id'],
             'response_type' => 'code',
             'state'         => $state,
-            'redirect_uri'  => request()->getUri(),
+            'redirect_uri'  => request()->url(),
         ];
 
         $query = http_build_query($params);
 
         $url = $this->baseUrl . '/authorize?' . $query;
-
         return redirect($url);
 
 
@@ -49,6 +45,7 @@ class Oauth
 
     public function token()
     {
+
         if (request('state') !== session('youzan.state')) {
             throw new Exception('state不匹配,服务器的值为:' . session('youzan.state') . ',返回值为:' . request('state'));
         }
@@ -58,7 +55,7 @@ class Oauth
             'client_secret' => $this->config['client_secret'],
             'grant_type'    => 'authorization_code',
             'code'          => request('code'),
-            'redirect_uri'  => request()->getUri()
+            'redirect_uri'  => request()->url()
         ];
 
 

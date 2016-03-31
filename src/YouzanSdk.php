@@ -37,7 +37,7 @@ class YouzanSdk
                 return $this->oauth->authorize();
             }
         } else {
-            $accessToken = $this->oauth->token();
+            $accessToken = $this->getAccessToken() ? $this->getAccessToken() : $this->oauth->token();
         }
 
         if (isset($accessToken->error)) {
