@@ -34,7 +34,7 @@ class Oauth
             'client_id'     => $this->config['client_id'],
             'response_type' => 'code',
             'state'         => $state,
-            'redirect_uri'  => 'http://api.huodonghezi.com/callback',
+            'redirect_uri'  => request()->getUri(),
         ];
 
         $query = http_build_query($params);
@@ -58,8 +58,7 @@ class Oauth
             'client_secret' => $this->config['client_secret'],
             'grant_type'    => 'authorization_code',
             'code'          => request('code'),
-//            'redirect_uri'  => request()->getUri()
-            'redirect_uri'  => 'http://api.huodonghezi.com/callback'
+            'redirect_uri'  => request()->getUri()
         ];
 
 
