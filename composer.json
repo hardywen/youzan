@@ -1,0 +1,21 @@
+{
+    "name": "hardywen/youzan",
+    "description": "",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hardywen",
+            "email": "375480616@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravel/framework": "5.*"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Hardywen\\Youzan\\": "src"
+        }
+    }
+}
